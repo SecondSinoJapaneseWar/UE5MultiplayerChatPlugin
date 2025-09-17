@@ -2,7 +2,7 @@
 
 
 #include "Utilities/ChatUtilities.h"
-
+#include "GameFramework/GameModeBase.h"
 #include "GameFramework/Character.h"
 #include "Interfaces/GameModeChatInterface.h"
 #include "Interfaces/PlayerChatInterface.h"
@@ -69,9 +69,8 @@ void UChatUtilities::AddChatConstantWithVariablesData(APlayerController* PC, ECh
 void UChatUtilities::AddChatDataFromAvatar(ACharacter* Character, EChatColor Color, EMessageCategories Category,
                                            const FString& Message)
 {
-	if (Character)
-		if (APlayerController* PC = Cast<APlayerController>(Character->GetController()))
-			AddChatData(PC, Color, Category, Message);
+	if (APlayerController* PC = Cast<APlayerController>(Character->GetController()))
+		AddChatData(PC, Color, Category, Message);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
