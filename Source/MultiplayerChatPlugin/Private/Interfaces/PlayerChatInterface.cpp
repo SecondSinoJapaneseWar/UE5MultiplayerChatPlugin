@@ -172,36 +172,21 @@ void IPlayerChatInterface::GuildSpeak(const FString& Message)
 
 void IPlayerChatInterface::SelfHearingSpeak(EGlobalMessageType Type, const FString& Message, const FString& Target)
 {
-	const EChatColor Color = EChatColor::White;
-
-	const FString ReworkedMessage = "'" + Message + "'";
+	(void)Target;
+	const FString FormattedMessage = GetChatName() + TEXT(": ") + Message;
 	switch (Type)
 	{
 	default:
 	case EGlobalMessageType::Unknown: break;
 	case EGlobalMessageType::Say:
-		AddChatData(Color, EMessageCategories::Chat, "You say, " + ReworkedMessage);
-		break;
 	case EGlobalMessageType::Group:
-		AddChatData(Color, EMessageCategories::Chat, "You tell your party, " + ReworkedMessage);
-		break;
 	case EGlobalMessageType::Guild:
-		AddChatData(Color, EMessageCategories::Chat, "You tell the guild, " + ReworkedMessage);
-		break;
 	case EGlobalMessageType::Auction:
-		AddChatData(Color, EMessageCategories::Chat, "You auction, " + ReworkedMessage);
-		break;
 	case EGlobalMessageType::Raid:
-		AddChatData(Color, EMessageCategories::Chat, "You tell your raid party, " + ReworkedMessage);
-		break;
 	case EGlobalMessageType::Shout:
-		AddChatData(Color, EMessageCategories::Chat, "You shout, " + ReworkedMessage);
-		break;
 	case EGlobalMessageType::OOC:
-		AddChatData(Color, EMessageCategories::Chat, "You say out of character, " + ReworkedMessage);
-		break;
 	case EGlobalMessageType::Tell:
-		AddChatData(Color, EMessageCategories::Chat, "You told " + Target + ", " + ReworkedMessage);
+		AddChatDataType(Type, FormattedMessage);
 		break;
 	}
 }

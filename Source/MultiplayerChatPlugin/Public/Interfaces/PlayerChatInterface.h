@@ -81,8 +81,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Chat|Display")
 	virtual void AddChatDataType(EGlobalMessageType Type, const FString& Message);
 
-	//this is the function that display the message of the speaker to itself.
-	// You said "..." , You tell someone "..."
+	// Displays the speaker's own message as "PlayerName: Message".
 	UFUNCTION(BlueprintCallable, Category = "Chat|Talk")
 	virtual void SelfHearingSpeak(EGlobalMessageType Type, const FString& Message, const FString& Target = "");
 

@@ -8,6 +8,14 @@
 #include "Interfaces/PlayerChatInterface.h"
 #include "Kismet/KismetSystemLibrary.h"
 
+namespace
+{
+	FString FormatPlayerMessage(const IPlayerChatInterface& Speaker, const FString& Message)
+	{
+		return Speaker.GetChatName() + TEXT(": ") + Message;
+	}
+}
+
 
 void IGameModeChatInterface::AreaSpeak(APlayerController* PlayerController, const FString& Message, float Range)
 {
@@ -30,7 +38,7 @@ void IGameModeChatInterface::AreaSpeak(APlayerController* PlayerController, cons
 	                                      8,
 	                                      OverlapStatus ? FColor::Green : FColor::Red, 3.f, 0.f);
 
-	const FString FinalMessage = OriginalSpeaker->GetChatName() + " says, '" + Message + "'";
+	const FString FinalMessage = FormatPlayerMessage(*OriginalSpeaker, Message);
 	for (auto& Actor : ActorArray)
 	{
 		if (ACharacter* Character = Cast<ACharacter>(Actor))
@@ -56,8 +64,7 @@ void IGameModeChatInterface::ShoutSpeak(APlayerController* PlayerController, con
 	if (!OriginalSpeaker)
 		return;
 
-	const FString FinalMessage = "'" + String + "'";
-	const FString CompleteString = OriginalSpeaker->GetChatName() + " shouts, " + FinalMessage;
+	const FString CompleteString = FormatPlayerMessage(*OriginalSpeaker, String);
 	FConstPlayerControllerIterator EndIterator = GameMode->GetWorld()->GetPlayerControllerIterator();
 	EndIterator.SetToEnd();
 
@@ -85,8 +92,7 @@ void IGameModeChatInterface::OOCSpeak(APlayerController* PlayerController, const
 	if (!OriginalSpeaker)
 		return;
 
-	const FString FinalMessage = "'" + String + "'";
-	const FString CompleteString = OriginalSpeaker->GetChatName() + " says out of character, " + FinalMessage;
+	const FString CompleteString = FormatPlayerMessage(*OriginalSpeaker, String);
 	FConstPlayerControllerIterator EndIterator = GameMode->GetWorld()->GetPlayerControllerIterator();
 	EndIterator.SetToEnd();
 
@@ -114,8 +120,7 @@ void IGameModeChatInterface::AuctionSpeak(APlayerController* PlayerController, c
 	if (!OriginalSpeaker)
 		return;
 
-	const FString FinalMessage = "'" + String + "'";
-	const FString CompleteString = OriginalSpeaker->GetChatName() + " auctions, " + FinalMessage;
+	const FString CompleteString = FormatPlayerMessage(*OriginalSpeaker, String);
 	FConstPlayerControllerIterator EndIterator = GameMode->GetWorld()->GetPlayerControllerIterator();
 	EndIterator.SetToEnd();
 
@@ -142,8 +147,7 @@ void IGameModeChatInterface::GroupSpeak(APlayerController* PlayerController, con
 	if (!OriginalSpeaker)
 		return;
 
-	const FString FinalMessage = "'" + String + "'";
-	const FString CompleteString = OriginalSpeaker->GetChatName() + " tells the group, " + FinalMessage;
+	const FString CompleteString = FormatPlayerMessage(*OriginalSpeaker, String);
 
 	for (const auto& GroupMember : GetGroupMembers(PlayerController))
 	{
@@ -180,8 +184,7 @@ void IGameModeChatInterface::TellSpeak(APlayerController* MainPlayerController, 
                                        const FString& Message)
 {
 	const IPlayerChatInterface* OriginalSpeaker = Cast<IPlayerChatInterface>(MainPlayerController);
-	const FString FinalMessage = "'" + Message + "'";
-	const FString CompleteString = OriginalSpeaker->GetChatName() + " tells you, " + FinalMessage;
+	const FString CompleteString = FormatPlayerMessage(*OriginalSpeaker, Message);
 
 	if (APlayerController* TargetPC = FindPlayerWithName(Target))
 	{
@@ -237,8 +240,7 @@ void IGameModeChatInterface::RaidSpeak(APlayerController* PlayerController, cons
 	if (!OriginalSpeaker)
 		return;
 
-	const FString FinalMessage = "'" + String + "'";
-	const FString CompleteString = OriginalSpeaker->GetChatName() + " tells the raid, " + FinalMessage;
+	const FString CompleteString = FormatPlayerMessage(*OriginalSpeaker, String);
 
 	for (const auto& GroupMember : GetRaidMembers(PlayerController))
 	{
@@ -260,8 +262,7 @@ void IGameModeChatInterface::GuildSpeak(APlayerController* PlayerController, con
 	if (!OriginalSpeaker)
 		return;
 
-	const FString FinalMessage = "'" + String + "'";
-	const FString CompleteString = OriginalSpeaker->GetChatName() + " tells the guild, " + FinalMessage;
+	const FString CompleteString = FormatPlayerMessage(*OriginalSpeaker, String);
 
 	for (const auto& GroupMember : GetGuildMembers(PlayerController))
 	{
